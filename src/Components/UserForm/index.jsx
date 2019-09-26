@@ -12,6 +12,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import useFormal from '@kevinwolf/formal-web';
 import Grid from '@material-ui/core/Grid';
+import PropTypes from 'prop-types';
 import * as yup from 'yup';
 
 import CustomLink from '../CustomLink';
@@ -57,13 +58,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const initialValues = {
-  email: '',
-  password: '',
-};
-
 function UserForm({ values }) {
-  const formal = useFormal(values || initialValues, {
+  const formal = useFormal(values, {
     schema,
     onSubmit: formValues => {
       // TODO: Submit logic
@@ -158,5 +154,19 @@ function UserForm({ values }) {
     </Container>
   );
 }
+
+UserForm.propTypes = {
+  values: PropTypes.shape({
+    email: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+  }),
+};
+
+UserForm.defaultProps = {
+  values: {
+    email: '',
+    password: '',
+  },
+};
 
 export default UserForm;
