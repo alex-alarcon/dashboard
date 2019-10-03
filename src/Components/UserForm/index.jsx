@@ -58,17 +58,23 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function UserForm({ values }) {
+function UserForm({ values, onSubmit }) {
+  const [passStrength, setPassStrength] = useState(0);
+  const [customErr, setCustomErr] = useState('');
+  const classes = useStyles();
+
+  const submit = formValues => {
+    onSubmit(formValues)
+      .then(() => {})
+      .catch(error => {
+        setCustomErr(error.response.data.error);
+      });
+  };
+
   const formal = useFormal(values, {
     schema,
-    onSubmit: formValues => {
-      // TODO: Submit logic
-      console.log('Your values are:', formValues);
-    },
+    onSubmit: submit,
   });
-
-  const [passStrength, setPassStrength] = useState(0);
-  const classes = useStyles();
 
   return (
     <Container component="main" maxWidth="xs">
@@ -134,6 +140,11 @@ function UserForm({ values }) {
                 </FormHelperText>
               )}
             </Grid>
+            {customErr && (
+              <Grid item xs={12}>
+                <FormHelperText error>{customErr.message}</FormHelperText>
+              </Grid>
+            )}
           </Grid>
           <Button
             type="submit"
@@ -160,6 +171,7 @@ UserForm.propTypes = {
     email: PropTypes.string.isRequired,
     password: PropTypes.string.isRequired,
   }),
+  onSubmit: PropTypes.func.isRequired,
 };
 
 UserForm.defaultProps = {
