@@ -1,35 +1,39 @@
 import PropTypes from 'prop-types';
 import { CancelToken } from 'axios';
+import { useDispatch } from 'react-redux';
 import React, { useCallback } from 'react';
 
-import API from '../../../API';
+import { signUp } from '../../../actions';
 
 import UserForm from '../../../Components/UserForm';
 
 function Signup({ history }) {
   const sourceRef = React.useRef();
-
+  const dispatch = useDispatch();
   React.useEffect(() => {
     return () => {
       sourceRef.current.cancel('Me fui!!!');
     };
   }, []);
 
-  const signUp = useCallback(
+  const register = useCallback(
     async data => {
       sourceRef.current = CancelToken.source();
 
-      const res = await API.signUp(data, {
-        cancelToken: sourceRef.current.token,
-      });
-
-      localStorage.setItem('user', JSON.stringify(res.user));
-      history.push('/home');
+      await dispatch(
+        signUp(
+          data,
+          {
+            cancelToken: sourceRef.current.token,
+          },
+          history,
+        ),
+      );
     },
-    [history],
+    [dispatch, history],
   );
 
-  return <UserForm onSubmit={signUp} />;
+  return <UserForm onSubmit={register} />;
 }
 
 Signup.propTypes = {

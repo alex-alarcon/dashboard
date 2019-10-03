@@ -64,11 +64,7 @@ function UserForm({ values, onSubmit }) {
   const classes = useStyles();
 
   const submit = formValues => {
-    onSubmit(formValues)
-      .then(() => {})
-      .catch(error => {
-        setCustomErr(error.response.data.error);
-      });
+    onSubmit(formValues);
   };
 
   const formal = useFormal(values, {
