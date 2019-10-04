@@ -23,6 +23,6 @@ export const signUp = (data, options = {}, history) => async dispatch => {
     dispatch(user.signup.success(newUser));
     history.push('/home');
   } catch (error) {
-    dispatch(user.signup.failure(error));
+    dispatch(user.signup.failure(error.response || error));
   }
 };

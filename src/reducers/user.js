@@ -24,7 +24,7 @@ const reducer = handleActions(
       (state, { payload }) => ({
         ...state,
         isLoading: false,
-        error: payload,
+        error: payload.data || payload,
       }),
     ],
   ]),

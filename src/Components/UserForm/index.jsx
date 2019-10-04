@@ -12,10 +12,12 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import useFormal from '@kevinwolf/formal-web';
 import Grid from '@material-ui/core/Grid';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import * as yup from 'yup';
 
 import CustomLink from '../CustomLink';
+import { user } from '../../actions';
 
 const schema = yup.object().shape({
   email: yup
@@ -59,8 +61,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function UserForm({ values, onSubmit }) {
+  const error = useSelector(state => state.user.error);
   const [passStrength, setPassStrength] = useState(0);
-  const [customErr, setCustomErr] = useState('');
   const classes = useStyles();
 
   const submit = formValues => {
@@ -136,9 +138,9 @@ function UserForm({ values, onSubmit }) {
                 </FormHelperText>
               )}
             </Grid>
-            {customErr && (
+            {error && (
               <Grid item xs={12}>
-                <FormHelperText error>{customErr.message}</FormHelperText>
+                <FormHelperText error>{error.error.message}</FormHelperText>
               </Grid>
             )}
           </Grid>
