@@ -6,10 +6,7 @@
     "plugin:import/warnings",
     "plugin:prettier/recommended"
   ],
-  "plugins": [
-    "import",
-    "prettier"
-  ],
+  "plugins": ["import", "prettier"],
   "rules": {
     "prettier/prettier": "error",
     "import/order": [
@@ -25,6 +22,7 @@
         ],
         "newlines-between": "always-and-inside-groups"
       }
-    ]
+    ],
+    "react/jsx-props-no-spreading": 0
   }
 }
