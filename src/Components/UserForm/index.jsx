@@ -13,27 +13,12 @@ import useFormal from '@kevinwolf/formal-web';
 import Grid from '@material-ui/core/Grid';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import * as yup from 'yup';
+
+import userSchema from '../../yupSchemas/user';
 
 import CustomLink from '../CustomLink';
 
 import useStyles from './styles';
-
-const schema = yup.object().shape({
-  email: yup
-    .string()
-    .email('Must be a valid email')
-    .required(),
-  password: yup
-    .string()
-    .matches(
-      /^((?=.*[\d])(?=.*[a-z])(?=.*[A-Z])|(?=.*[a-z])(?=.*[A-Z])(?=.*[^\w\d\s])|(?=.*[\d])(?=.*[A-Z])(?=.*[^\w\d\s])|(?=.*[\d])(?=.*[a-z])(?=.*[^\w\d\s])).{8,30}$/,
-      {
-        message: 'Unsecure password',
-        excludeEmptyString: true,
-      },
-    ),
-});
 
 function UserForm({ values, onSubmit }) {
   const error = useSelector(state => state.user.error);
@@ -45,7 +30,7 @@ function UserForm({ values, onSubmit }) {
   };
 
   const formal = useFormal(values, {
-    schema,
+    userSchema,
     onSubmit: submit,
   });
 
@@ -71,6 +56,7 @@ function UserForm({ values, onSubmit }) {
                 name="email"
                 autoComplete="email"
                 value={formal.values.email}
+                type="email"
                 onChange={e => formal.change('email', e.target.value)}
                 InputProps={{
                   'aria-describedby': 'email-error',
